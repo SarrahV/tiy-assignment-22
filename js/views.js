@@ -68,7 +68,12 @@ var NavView = Backbone.View.extend({
   onClick: function(e) {
     e.preventDefault();
     $link = this.$(e.currentTarget);
-    this.trigger("link:click", $link.data("name"));
+    var name = $link.data("name");
+    var href = $link.attr("href");
+    this.trigger("link:click", { 
+      name: name,
+      href: href
+    });
   }
 });
 

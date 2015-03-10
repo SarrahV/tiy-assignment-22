@@ -1,8 +1,17 @@
-var App = (function(){
+var App = Backbone.Router.extend({
 
-  function App() {
-    _.extend(this, Backbone.Events);
+  routes: {
+    ""          : "showHome",
+    "products"  : "showProducts", 
+    "terms"     : "showTerms",
+  },
 
+  initialize: function() {
+
+    this.initialSetup();
+  },
+
+  initialSetup: function() {
     // views
 
     this.products     = new Products();
@@ -10,6 +19,7 @@ var App = (function(){
     this.nav          = new NavView();
     this.homeView     = new HomeView();
     this.termsView    = new TermsView();
+
 
     // initial structure
 
@@ -27,8 +37,8 @@ var App = (function(){
       this.nav.hideSpinner();
     });
 
-    this.listenTo(this.nav, "link:click", function(name){
-      switch(name) {
+    this.listenTo(this.nav, "link:click", function(options){
+      switch(options.name) {
         case "products":
           this.showProducts();
         break;
@@ -39,14 +49,14 @@ var App = (function(){
           this.showHome();
         break;
       }
+      this.navigate(options.href);
     });
 
     // default to showing home
 
     this.showHome();
-  }
+  },
 
-  App.prototype = {
 
     showProducts: function() {
       this.$main.html( this.productsView.render().el );
@@ -63,8 +73,5 @@ var App = (function(){
       this.$main.html( this.termsView.render().el );
     }
 
-  };
 
-  return App;
-
-})();
+});
